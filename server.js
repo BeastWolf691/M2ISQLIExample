@@ -11,8 +11,8 @@ app.use(express.urlencoded({ extended: true }));
 const db = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
-	password: 'root',
-	database: 'exemple_sqli'
+	password: '',
+	database: 'sqli',//donner le nom de la bdd qu'on a crée
 });
 
 db.connect(err => {
@@ -23,7 +23,7 @@ db.connect(err => {
 // Requête SQL vulnérable
 app.post('/login', (req, res) => {
 	const { username, password } = req.body;
-	const query = `SELECT * FROM users WHERE username = 'admin' AND password = '' OR '1'='1'`;
+	const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
 
 	db.query(query, (err, results) => {
 		if (err) throw err;
